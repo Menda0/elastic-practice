@@ -1,7 +1,39 @@
 const inquirer = require('inquirer')
 const axios = require('axios')
 
-const ELASTIC_URL = "http://localhost:9200"
+const ELASTIC_URL = "http://localhost:9200";
+const INDEX = "books";
+
+async function elasticCreateDocument(name, author, rating){
+    const url = `${ELASTIC_URL}/${INDEX}/_doc`;
+    const body = { name, author, rating };
+
+    const {data} = await axios.post(url, body);
+    console.log(data);
+}
+
+function createDocument(){
+    inquirer.prompt([
+        {
+            type:"input",
+            name:"title",
+            message:"Title:"
+        },
+        {
+            type:"input",
+            name:"author",
+            message:"Author:"
+        },
+        {
+            type:"number",
+            name:"rating",
+            message:"Rating:"
+        }
+    ]).then(function (answers){
+        const {name, author, rating} = answers;
+        elasticCreateDocument(name, author, rating);
+    }).catch()
+}
 
 function run(){
     inquirer.prompt([
@@ -14,7 +46,7 @@ function run(){
     ]).then(function (answers){
         switch(answers['action']){
             case "Create Document":
-                // createDocument();
+                createDocument();
                 console.log("create document");
                 break;
             case "Update Document":
