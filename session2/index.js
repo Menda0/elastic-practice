@@ -4,9 +4,9 @@ const axios = require('axios')
 const ELASTIC_URL = "http://localhost:9200";
 const INDEX = "books";
 
-async function elasticCreateDocument(name, author, rating){
+async function elasticCreateDocument(title, author, rating){
     const url = `${ELASTIC_URL}/${INDEX}/_doc`;
-    const body = { name, author, rating };
+    const body = { title, author, rating };
 
     const {data} = await axios.post(url, body);
     console.log(data);
@@ -30,8 +30,8 @@ function createDocument(){
             message:"Rating:"
         }
     ]).then(function (answers){
-        const {name, author, rating} = answers;
-        elasticCreateDocument(name, author, rating);
+        const {title, author, rating} = answers;
+        elasticCreateDocument(title, author, rating);
     }).catch()
 }
 
