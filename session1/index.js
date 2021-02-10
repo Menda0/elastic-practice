@@ -56,9 +56,19 @@ function createIndex(){
 // obj2.a -> 1
 // obj2.c -> undefined
 
+const name = "Marco"
+const message = `Ola eu sou o ${name}`
+
+
+
 async function elasticGetIndex(indexName){
     // Template string or string interpolation
     const endpoint = `${ELASTIC_URL}/${indexName}`; //ELASTIC_URL+'/'+indexName
+
+    // axios.get -> {
+    //    data: {...}
+    //    ...
+    //}
     const {data} = await axios.get(endpoint);
     console.log(data);
 }
