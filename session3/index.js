@@ -4,23 +4,7 @@ const axios = require("axios");
 const ELASTIC_URL = "http://localhost:9200";
 const INDEX = "books";
 
-// Leaf query clause
-// Match operation title=${title}
-async function searchBook(title) {
-    const SEARCH_URL = `${ELASTIC_URL}/${INDEX}/_search`;
-
-    // Query DSL
-    const body = {
-        "query":{
-            "match":{
-                "title":title
-            }
-        }
-    }
-
-    const {data} = await axios.post(SEARCH_URL, body);
-
-    const hits = data.hits.hits;
+function outputBooks(hits){
     const books = [];
 
     hits.forEach(function (hit){
@@ -40,8 +24,26 @@ async function searchBook(title) {
         books.push(book);
     });
 
-    // for(const hit of hits){
-    // }
+    return books;
+}
+
+// Leaf query clause
+// Match operation title=${title}
+async function searchBook(title) {
+    const SEARCH_URL = `${ELASTIC_URL}/${INDEX}/_search`;
+
+    // Query DSL
+    const body = {
+        "query":{
+            "match":{
+                "title":title
+            }
+        }
+    }
+
+    const {data} = await axios.post(SEARCH_URL, body);
+
+    const books = outputBooks(data.hits.hits);
 
     console.table(books);
 }
